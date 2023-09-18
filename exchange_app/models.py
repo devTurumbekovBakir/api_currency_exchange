@@ -8,35 +8,42 @@ User = get_user_model()
 class AccountAbstract(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=14, decimal_places=2)
+    code_currency = models.CharField(max_length=3)
 
     class Meta:
-        verbose_name = 'Счет'
-        verbose_name_plural = 'Счета'
         abstract = True
 
     def __str__(self):
-        return f'{self.user.username} - {self.amount}'
+        return f'{self.user.username} - {self.code_currency}'
 
 
-class AccountUsd(AccountAbstract):
-    ...
+class AccountUSD(AccountAbstract):
+    class Meta:
+        verbose_name = 'Счет USD'
+        verbose_name_plural = 'Счета USD'
 
 
-class AccountRub(AccountAbstract):
-    ...
+class AccountRUB(AccountAbstract):
+    class Meta:
+        verbose_name = 'Счет RUB'
+        verbose_name_plural = 'Счета RUB'
 
 
-class AccountEur(AccountAbstract):
-    ...
+class AccountEUR(AccountAbstract):
+    class Meta:
+        verbose_name = 'Счет EUR'
+        verbose_name_plural = 'Счета EUR'
 
 
-class AccountSom(AccountAbstract):
-    ...
+class AccountKGS(AccountAbstract):
+    class Meta:
+        verbose_name = 'Счет KGS'
+        verbose_name_plural = 'Счета KGS'
 
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    form_currency = models.CharField(max_length=3)
+    from_currency = models.CharField(max_length=3)
     amount = models.DecimalField(max_digits=13, decimal_places=2)
     to_currency = models.CharField(max_length=3)
 

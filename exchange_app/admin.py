@@ -1,8 +1,9 @@
 from django.contrib import admin
 
-from .models import AccountUsd, AccountEur, AccountRub, AccountSom
+from .models import AccountUSD, AccountEUR, AccountRUB, AccountKGS, Transaction
 
-admin.site.register(AccountUsd)
-admin.site.register(AccountEur)
-admin.site.register(AccountRub)
-admin.site.register(AccountSom)
+admin.site.register(AccountUSD)
+admin.site.register(AccountEUR)
+admin.site.register(AccountRUB)
+admin.site.register(AccountKGS)
+admin.site.register(Transaction)
