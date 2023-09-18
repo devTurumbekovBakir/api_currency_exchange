@@ -10,13 +10,11 @@ class AccountAbstract(models.Model):
     code_currency = models.CharField(max_length=3)
     amount = models.FloatField()
 
-
     class Meta:
         abstract = True
 
     def __str__(self):
         return f'{self.user.username} - {self.code_currency}'
-
 
 
 class AccountUSD(AccountAbstract):
@@ -51,7 +49,6 @@ class Transaction(models.Model):
     from_currency = models.CharField(max_length=3)
     amount = models.FloatField()
     to_currency = models.CharField(max_length=3)
-    
 
     class Meta:
         verbose_name = 'Транзакция'

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from .models import User, StatusUser
-from exchange_app.models import AccountUsd, AccountRub, AccountEur, AccountSom
+from exchange_app.models import AccountUSD, AccountEUR, AccountRUB, AccountKGS
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,10 +29,10 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
 
-        AccountUsd.objects.create(user=user, amount=0)
-        AccountRub.objects.create(user=user, amount=0)
-        AccountEur.objects.create(user=user, amount=0)
-        AccountSom.objects.create(user=user, amount=invest_sum)
+        AccountUSD.objects.create(user=user, amount=0)
+        AccountRUB.objects.create(user=user, amount=0)
+        AccountEUR.objects.create(user=user, amount=0)
+        AccountKGS.objects.create(user=user, amount=invest_sum)
 
         return user
 
