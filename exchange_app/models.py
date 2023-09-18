@@ -7,7 +7,7 @@ User = get_user_model()
 
 class AccountAbstract(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=14, decimal_places=2)
+    amount = models.FloatField()
 
     class Meta:
         abstract = True
@@ -42,8 +42,8 @@ class AccountSom(AccountAbstract):
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    form_currency = models.CharField(max_length=3)
-    amount = models.DecimalField(max_digits=13, decimal_places=2)
+    from_currency = models.CharField(max_length=3)
+    amount = models.FloatField()
     to_currency = models.CharField(max_length=3)
 
     class Meta:
