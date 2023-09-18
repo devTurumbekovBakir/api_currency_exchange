@@ -10,8 +10,6 @@ class AccountAbstract(models.Model):
     amount = models.DecimalField(max_digits=14, decimal_places=2)
 
     class Meta:
-        verbose_name = 'Счет'
-        verbose_name_plural = 'Счета'
         abstract = True
 
     def __str__(self):
@@ -19,19 +17,27 @@ class AccountAbstract(models.Model):
 
 
 class AccountUsd(AccountAbstract):
-    ...
+    class Meta:
+        verbose_name = 'Счет Доллар'
+        verbose_name_plural = 'Счета Доллары'
 
 
 class AccountRub(AccountAbstract):
-    ...
+    class Meta:
+        verbose_name = 'Счет Рубль'
+        verbose_name_plural = 'Счета Рубли'
 
 
 class AccountEur(AccountAbstract):
-    ...
+    class Meta:
+        verbose_name = 'Счет Евро'
+        verbose_name_plural = 'Счета Евро'
 
 
 class AccountSom(AccountAbstract):
-    ...
+    class Meta:
+        verbose_name = 'Счет Сом'
+        verbose_name_plural = 'Счета Сомы'
 
 
 class Transaction(models.Model):
