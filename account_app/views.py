@@ -1,3 +1,19 @@
-from django.shortcuts import render
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.viewsets import ModelViewSet
 
-# Create your views here.
+from .models import User
+from .serializers import UserSerializer
+from .permissions import IsStaffUser
+
+
+class UserViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    authentication_classes = [TokenAuthentication]
+
+    def get_permissions(self):
+        if self.action == 'list' and not self.request.user.is_staff:
+            return [IsStaffUser()]
+        elif self.action == 'create':
+            return []
+        return super().get_permissions()
