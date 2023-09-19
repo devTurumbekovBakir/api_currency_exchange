@@ -19,6 +19,7 @@ class UserViewSet(ModelViewSet):
             return []
         return super().get_permissions()
 
+
 class StatusUserViewSet(ModelViewSet):
     queryset = StatusUser.objects.all()
     serializer_class = StatusUserSerializer
