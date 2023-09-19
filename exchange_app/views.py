@@ -1,4 +1,3 @@
-from _decimal import Decimal
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -46,9 +45,8 @@ class TransactionListCreateApiView(APIView):
                 acc_rub.save()
 
             rate = get_currency_api(from_currency, to_currency)
-            result = Decimal(rate) * amount
+            result = rate * amount
 
-            print(acc_usd.amount)
             if acc_usd.code_currency == to_currency:
                 acc_usd.amount += result
                 acc_usd.save()
@@ -61,7 +59,7 @@ class TransactionListCreateApiView(APIView):
             elif acc_rub.code_currency == to_currency:
                 acc_rub.amount += result
                 acc_rub.save()
-            print(acc_usd.amount)
+
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
