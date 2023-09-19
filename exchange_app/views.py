@@ -48,7 +48,6 @@ class TransactionListCreateApiView(APIView):
 
             result = rate * amount
 
-
             if acc_usd.code_currency == to_currency:
                 acc_usd.amount += result
                 acc_usd.save()
