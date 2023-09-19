@@ -5,14 +5,18 @@ from rest_framework.exceptions import ValidationError
 from .models import User, StatusUser
 from exchange_app.models import AccountUSD, AccountEUR, AccountRUB, AccountKGS
 
+from allauth.account.models import EmailAddress
+from allauth.account.utils import send_email_confirmation
+
 
 class UserSerializer(serializers.ModelSerializer):
     invest_sum = serializers.FloatField(write_only=True)
     password = serializers.CharField(write_only=True)
+    id = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'invest_sum', 'password', 'passport_id']
+        fields = ['id', 'username', 'email', 'invest_sum', 'password', 'passport_id', 'is_active']
 
     def create(self, validated_data):
         invest_sum = float(validated_data.pop('invest_sum'))
@@ -26,14 +30,18 @@ class UserSerializer(serializers.ModelSerializer):
             status = StatusUser.objects.get(number=2)
 
         user = User(username=validated_data['username'], email=validated_data['email'],
-                    passport_id=passport_id, status=status)
+                    passport_id=passport_id, status=status, is_active=0)
         user.set_password(validated_data['password'])
         user.save()
+
+        email_address = EmailAddress.objects.create(user=user, email=user.email, primary=True, verified=False)
 
         AccountUSD.objects.create(user=user, amount=0)
         AccountRUB.objects.create(user=user, amount=0)
         AccountEUR.objects.create(user=user, amount=0)
         AccountKGS.objects.create(user=user, amount=invest_sum)
+
+        send_email_confirmation(self.context['request'], email_address.user)
 
         return user
 

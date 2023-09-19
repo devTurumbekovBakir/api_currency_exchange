@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
     'exchange_app',
     'account_app',
@@ -147,10 +149,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'account_app.User'
 
 
-ACCOUNT_EMAIL_VERIFICATION = 'optional'
-# Время действия ссылки подтверждения email в днях
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
-# Интервал между отправкой повторной ссылки подтверждения email в секундах
-ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN = 1800
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'bakirturumbekov37@gmail.com'
+EMAIL_HOST_PASSWORD = 'msvl bdsu frdo jqzb'
 
 
+AUTHENTICATION_BACKENDS = (
+
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Обязательное подтверждение email
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7  # Срок действия ссылки для подтверждения email (в днях)
+ACCOUNT_EMAIL_SUBJECT_PREFIX = '[Обмен Валют] '  # Префикс для темы письма с подтверждением email
