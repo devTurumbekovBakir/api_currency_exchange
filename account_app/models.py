@@ -18,7 +18,7 @@ class StatusUser(models.Model):
 class User(AbstractUser):
     passport_id = models.CharField(max_length=9, null=True, blank=True,
                                    help_text='Введите ID паспорта, если вы гражданин КР')
-    status = models.ForeignKey(StatusUser, on_delete=models.CASCADE)
+    status = models.OneToOneField(StatusUser, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Пользователь'
