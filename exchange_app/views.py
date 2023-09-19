@@ -37,11 +37,11 @@ class TransactionListCreateApiView(APIView):
             user = request.user
             user_discount = user.status.discount
 
-            discount = amount * user_discount / 100
-            amount += discount
-
             rate = get_currency_api(from_currency, to_currency)
             result = rate * amount
+
+            discount = amount * user_discount / 100
+            amount += discount
 
             for account in lists_account:
                 withdraw_from_account(account, from_currency, amount)

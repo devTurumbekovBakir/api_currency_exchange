@@ -25,4 +25,4 @@ class User(AbstractUser):
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        return f'{self.username} {self.status.number}'
+        return f'{self.username} {self.status}'
