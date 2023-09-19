@@ -14,25 +14,25 @@ class AccountKGSSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountKGS
         fields = '__all__'
-        read_only_fields = ['user']
+        read_only_fields = ['user', 'code_currency']
 
 
 class AccountUSDSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountUSD
         fields = '__all__'
-        read_only_fields = ['user']
+        read_only_fields = ['user', 'code_currency']
 
 
 class AccountEURSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountEUR
         fields = '__all__'
-        read_only_fields = ['user']
+        read_only_fields = ['user', 'code_currency']
 
 
 class AccountRUBSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountRUB
         fields = '__all__'
-        read_only_fields = ['user']
+        read_only_fields = ['user', 'code_currency']

@@ -7,7 +7,6 @@ User = get_user_model()
 
 class AccountAbstract(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    code_currency = models.CharField(max_length=3)
     amount = models.FloatField()
 
     class Meta:
@@ -18,6 +17,7 @@ class AccountAbstract(models.Model):
 
 
 class AccountUSD(AccountAbstract):
+    code_currency = models.CharField(max_length=3, default='USD')
   
     class Meta:
         verbose_name = 'Счет USD'
@@ -25,12 +25,15 @@ class AccountUSD(AccountAbstract):
 
 
 class AccountRUB(AccountAbstract):
+    code_currency = models.CharField(max_length=3, default='RUB')
+
     class Meta:
         verbose_name = 'Счет RUB'
         verbose_name_plural = 'Счета RUB'
 
 
 class AccountEUR(AccountAbstract):
+    code_currency = models.CharField(max_length=3, default='EUR')
   
     class Meta:
         verbose_name = 'Счет EUR'
@@ -38,6 +41,7 @@ class AccountEUR(AccountAbstract):
 
 
 class AccountKGS(AccountAbstract):
+    code_currency = models.CharField(max_length=3, default='KGS')
   
     class Meta:
         verbose_name = 'Счет KGS'
