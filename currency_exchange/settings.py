@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
 
+    'allauth',
+    'allauth.account',
+
     'exchange_app',
     'account_app',
 ]
@@ -54,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'currency_exchange.urls'
@@ -141,3 +145,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'account_app.User'
+
+
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+# Время действия ссылки подтверждения email в днях
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+# Интервал между отправкой повторной ссылки подтверждения email в секундах
+ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN = 1800
+
+

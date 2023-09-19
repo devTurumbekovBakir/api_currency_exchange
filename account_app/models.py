@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 class StatusUser(models.Model):
     number = models.PositiveIntegerField(help_text="Идентификатор статуса")
     description = models.CharField(max_length=50)
-    discount = models.FloatField(help_text="Коммиссия ")
+    discount = models.FloatField(help_text="Коммиссия")
 
     class Meta:
         verbose_name = 'Статус'
@@ -20,10 +20,9 @@ class User(AbstractUser):
                                    help_text='Введите ID паспорта, если вы гражданин КР')
     status = models.ForeignKey(StatusUser, on_delete=models.CASCADE, null=True)
 
-
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        return f'{self.username} {self.status}'
+        return f'{self.username} {self.status.number}'
