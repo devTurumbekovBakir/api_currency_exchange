@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         if passport_id:
             status = StatusUser.objects.get(number=1)
-        elif passport_id is None and invest_sum >= 100000000:
+        elif passport_id is None and invest_sum >= 1000000:
             status = StatusUser.objects.get(number=3)
         else:
             status = StatusUser.objects.get(number=2)
@@ -67,3 +67,10 @@ class UserSerializer(serializers.ModelSerializer):
         if value < 1000:
             raise ValidationError('Введенная сумма не должна быть меньше 1000 сом')
         return value
+
+
+class StatusUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StatusUser
+        fields = '__all__'
+        read_only_fields = ['user']
