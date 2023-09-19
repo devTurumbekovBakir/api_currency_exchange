@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -6,15 +7,15 @@ from exchange_app.models import AccountUSD, AccountEUR, AccountRUB, AccountKGS
 
 
 class UserSerializer(serializers.ModelSerializer):
-    invest_sum = serializers.FloatField()
+    invest_sum = serializers.FloatField(write_only=True)
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'invest_sum', 'password', 'passport_id']
-        extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        invest_sum = validated_data.pop('invest_sum')
+        invest_sum = float(validated_data.pop('invest_sum'))
         passport_id = validated_data.get('passport_id')
 
         if passport_id:
@@ -41,16 +42,20 @@ class UserSerializer(serializers.ModelSerializer):
         instance.email = validated_data.get('email', instance.email)
         instance.passport_id = validated_data.get('passport_id', instance.passport_id)
 
+        password = validated_data.get('password')
+        if password:
+            instance.password = make_password(password)  # хэширование
+
         instance.save()
 
-        invest_sum = validated_data.get('invest_sum', instance.accountsom.amount)
+        invest_sum = float(validated_data.get('invest_sum', instance.accountsom.amount))
 
         if instance.passport_id:
-            instance.status = StatusUser.objects.get(name=1)
+            instance.status = StatusUser.objects.get(number=1)
         elif invest_sum >= 100000000:
-            instance.status = StatusUser.objects.get(name=3)
+            instance.status = StatusUser.objects.get(number=3)
         else:
-            instance.status = StatusUser.objects.get(name=2)
+            instance.status = StatusUser.objects.get(number=2)
 
         instance.accountsom.amount = invest_sum
         instance.accountsom.save()

@@ -18,11 +18,11 @@ class StatusUser(models.Model):
 class User(AbstractUser):
     passport_id = models.CharField(max_length=9, null=True, blank=True,
                                    help_text='Введите ID паспорта, если вы гражданин КР')
-    status = models.OneToOneField(StatusUser, on_delete=models.CASCADE)
+    status = models.ForeignKey(StatusUser, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        return f'{self.username} {self.status.name}'
+        return f'{self.username} - {self.status.name}'
