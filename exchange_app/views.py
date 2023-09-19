@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 
 from .business_logic.currency import get_currency_api
+from .business_logic.transaction import withdraw_from_account, account_replenishment
 from .models import Transaction, AccountKGS, AccountUSD, AccountRUB, AccountEUR
 from .serializers import TransactionSerializer
 
@@ -27,43 +28,24 @@ class TransactionListCreateApiView(APIView):
             acc_rub = AccountRUB.objects.get(user=request.user)
             acc_eur = AccountEUR.objects.get(user=request.user)
 
+            lists_account = [acc_eur, acc_rub, acc_usd, acc_kgs]
+
             amount = serializer.validated_data['amount']
             from_currency = serializer.validated_data['from_currency']
             to_currency = serializer.validated_data['to_currency']
 
             user = request.user
             user_discount = user.status.discount
-            total_sum = amount * user_discount / 100
 
-            if acc_usd.code_currency == from_currency.upper():
-                acc_usd.amount = acc_usd.amount - total_sum
-                acc_usd.save()
-            elif acc_eur.code_currency == from_currency.upper():
-                acc_eur.amount = acc_eur.amount - total_sum
-                acc_eur.save()
-            elif acc_kgs.code_currency == from_currency.upper():
-                acc_kgs.amount = acc_kgs.amount - total_sum
-                acc_kgs.save()
-            elif acc_rub.code_currency == from_currency.upper():
-                acc_rub.amount = acc_rub.amount - total_sum
-                acc_rub.save()
+            discount = amount * user_discount / 100
+            amount += discount
 
             rate = get_currency_api(from_currency, to_currency)
             result = rate * amount
 
-
-            if acc_usd.code_currency == to_currency.upper():
-                acc_usd.amount = acc_usd.amount + result
-                acc_usd.save()
-            elif acc_eur.code_currency == to_currency.upper():
-                acc_eur.amount = acc_eur.amount + result
-                acc_eur.save()
-            elif acc_kgs.code_currency == to_currency.upper():
-                acc_kgs.amount = acc_kgs.amount + result
-                acc_kgs.save()
-            elif acc_rub.code_currency == to_currency.upper():
-                acc_rub.amount = acc_rub.amount + result
-                acc_rub.save()
+            for account in lists_account:
+                withdraw_from_account(account, from_currency, amount)
+                account_replenishment(account, to_currency, result)
 
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
