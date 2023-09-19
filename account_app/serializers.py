@@ -6,20 +6,19 @@ from exchange_app.models import AccountUSD, AccountEUR, AccountRUB, AccountKGS
 
 
 class UserSerializer(serializers.ModelSerializer):
-    invest_sum = serializers.FloatField()
-
+    invest_sum = serializers.FloatField(write_only=True)
+    password = serializers.CharField(write_only=True)
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'invest_sum', 'password', 'passport_id']
-        extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        invest_sum = validated_data.pop('invest_sum')
+        invest_sum = validated_data['invest_sum']
         passport_id = validated_data.get('passport_id')
 
         if passport_id:
             status = StatusUser.objects.get(number=1)
-        elif passport_id is None and invest_sum >= 100000000:
+        elif passport_id is None and invest_sum >= 1000000:
             status = StatusUser.objects.get(number=3)
         else:
             status = StatusUser.objects.get(number=2)
@@ -62,3 +61,10 @@ class UserSerializer(serializers.ModelSerializer):
         if value < 1000:
             raise ValidationError('Введенная сумма не должна быть меньше 1000 сом')
         return value
+
+
+class StatusUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StatusUser
+        fields = '__all__'
+        read_only_fields = ['user']

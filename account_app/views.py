@@ -1,8 +1,9 @@
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet
 
-from .models import User
-from .serializers import UserSerializer
+from .models import User, StatusUser
+from .serializers import UserSerializer, StatusUserSerializer
 from .permissions import IsStaffUser
 
 
@@ -17,3 +18,9 @@ class UserViewSet(ModelViewSet):
         elif self.action == 'create':
             return []
         return super().get_permissions()
+
+class StatusUserViewSet(ModelViewSet):
+    queryset = StatusUser.objects.all()
+    serializer_class = StatusUserSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAdminUser]
