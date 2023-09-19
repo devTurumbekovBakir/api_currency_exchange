@@ -18,7 +18,7 @@ class AccountAbstract(models.Model):
 
 class AccountUSD(AccountAbstract):
     code_currency = models.CharField(max_length=3, default='USD')
-  
+
     class Meta:
         verbose_name = 'Счет USD'
         verbose_name_plural = 'Счета USD'
@@ -34,7 +34,7 @@ class AccountRUB(AccountAbstract):
 
 class AccountEUR(AccountAbstract):
     code_currency = models.CharField(max_length=3, default='EUR')
-  
+
     class Meta:
         verbose_name = 'Счет EUR'
         verbose_name_plural = 'Счета EUR'
@@ -42,7 +42,7 @@ class AccountEUR(AccountAbstract):
 
 class AccountKGS(AccountAbstract):
     code_currency = models.CharField(max_length=3, default='KGS')
-  
+
     class Meta:
         verbose_name = 'Счет KGS'
         verbose_name_plural = 'Счета KGS'
