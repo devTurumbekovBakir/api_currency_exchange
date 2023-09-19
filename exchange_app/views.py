@@ -31,34 +31,38 @@ class TransactionListCreateApiView(APIView):
             from_currency = serializer.validated_data['from_currency']
             to_currency = serializer.validated_data['to_currency']
 
-            if acc_usd.code_currency == from_currency:
-                acc_usd.amount -= amount
+            user = request.user
+            user_discount = user.status.discount
+            total_sum = amount * user_discount / 100
+
+            if acc_usd.code_currency == from_currency.upper():
+                acc_usd.amount = acc_usd.amount - total_sum
                 acc_usd.save()
-            elif acc_eur.code_currency == from_currency:
-                acc_eur.amount -= amount
+            elif acc_eur.code_currency == from_currency.upper():
+                acc_eur.amount = acc_eur.amount - total_sum
                 acc_eur.save()
-            elif acc_kgs.code_currency == from_currency:
-                acc_kgs.amount -= amount
+            elif acc_kgs.code_currency == from_currency.upper():
+                acc_kgs.amount = acc_kgs.amount - total_sum
                 acc_kgs.save()
-            elif acc_rub.code_currency == from_currency:
-                acc_rub.amount -= amount
+            elif acc_rub.code_currency == from_currency.upper():
+                acc_rub.amount = acc_rub.amount - total_sum
                 acc_rub.save()
 
             rate = get_currency_api(from_currency, to_currency)
-
             result = rate * amount
 
-            if acc_usd.code_currency == to_currency:
-                acc_usd.amount += result
+
+            if acc_usd.code_currency == to_currency.upper():
+                acc_usd.amount = acc_usd.amount + result
                 acc_usd.save()
-            elif acc_eur.code_currency == to_currency:
-                acc_eur.amount += result
+            elif acc_eur.code_currency == to_currency.upper():
+                acc_eur.amount = acc_eur.amount + result
                 acc_eur.save()
-            elif acc_kgs.code_currency == to_currency:
-                acc_kgs.amount += result
+            elif acc_kgs.code_currency == to_currency.upper():
+                acc_kgs.amount = acc_kgs.amount + result
                 acc_kgs.save()
-            elif acc_rub.code_currency == to_currency:
-                acc_rub.amount += result
+            elif acc_rub.code_currency == to_currency.upper():
+                acc_rub.amount = acc_rub.amount + result
                 acc_rub.save()
 
             serializer.save(user=request.user)
