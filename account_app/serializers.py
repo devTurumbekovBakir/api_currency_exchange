@@ -16,7 +16,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
+
         fields = ['id', 'username', 'email', 'invest_sum', 'password', 'passport_id']
+
 
     def create(self, validated_data):
         invest_sum = float(validated_data.pop('invest_sum'))
@@ -39,6 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         user = User(username=validated_data['username'], email=validated_data['email'],
                     passport_id=passport_id, status=status, is_active=False, is_staff=is_staff)
+
 
         user.set_password(validated_data['password'])
         user.save()
