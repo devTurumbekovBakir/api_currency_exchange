@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'invest_sum', 'password', 'passport_id', 'is_active']
+        fields = ['id', 'username', 'email', 'invest_sum', 'password', 'passport_id', 'status']
 
     def create(self, validated_data):
         invest_sum = float(validated_data.pop('invest_sum'))
@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
             status = StatusUser.objects.get(number=2)
 
         user = User(username=validated_data['username'], email=validated_data['email'],
-                    passport_id=passport_id, status=status, is_active=0)
+                    passport_id=passport_id, status=status)
         user.set_password(validated_data['password'])
         user.save()
 

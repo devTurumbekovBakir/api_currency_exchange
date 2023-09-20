@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from .models import Transaction, AccountKGS, AccountUSD, AccountRUB, AccountEUR
 
@@ -8,6 +9,11 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = '__all__'
         read_only_fields = ['user']
+
+    def validate_amount(self, value):
+        if value < 0:
+            raise ValidationError('Введенная сумма не должна быть, отрицательным числом')
+        return value
 
 
 class AccountKGSSerializer(serializers.ModelSerializer):
