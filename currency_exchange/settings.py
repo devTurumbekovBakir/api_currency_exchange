@@ -42,11 +42,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
 
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-
     'exchange_app',
     'account_app',
 ]
@@ -59,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'currency_exchange.urls'
@@ -155,14 +149,3 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'bakirturumbekov37@gmail.com'
 EMAIL_HOST_PASSWORD = 'msvl bdsu frdo jqzb'
-
-
-AUTHENTICATION_BACKENDS = (
-
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
-
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Обязательное подтверждение email
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7  # Срок действия ссылки для подтверждения email (в днях)
-ACCOUNT_EMAIL_SUBJECT_PREFIX = '[Обмен Валют] '  # Префикс для темы письма с подтверждением email
