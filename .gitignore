@@ -1,4 +1,12 @@
 .idea
 venv
-**/__pycache__/
-db.sqlite3
+
+# cache
+**/__pycache__
+
+# static files
+backend/static
+
+# env files
+.env
+.env.db
