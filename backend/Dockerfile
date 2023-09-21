@@ -24,7 +24,7 @@ COPY requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/backend/wheels -r requirements.txt
 
 
-COPY .. .
+COPY . .
 
 #########
 # FINAL #
