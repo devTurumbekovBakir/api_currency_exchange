@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: gunicorn --workers 4 currency_exchange.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn --workers 4 currency_exchange_project.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/backend/web/static
     expose:
