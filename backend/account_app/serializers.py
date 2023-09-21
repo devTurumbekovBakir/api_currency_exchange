@@ -89,7 +89,6 @@ class StatusUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = StatusUser
         fields = '__all__'
-        read_only_fields = ['user']
 
 
 class EmailConfirmationSerializer(serializers.ModelSerializer):

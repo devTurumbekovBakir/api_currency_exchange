@@ -6,3 +6,8 @@ class IsStaffUser(permissions.BasePermission):
         if request.user and request.user.is_staff:
             return True
         return False
+
+
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj == request.user

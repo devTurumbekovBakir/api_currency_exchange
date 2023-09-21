@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,7 +9,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from .models import User, StatusUser, ConfirmationCode
 from .serializers import UserSerializer, StatusUserSerializer
-from .permissions import IsStaffUser
+from .permissions import IsStaffUser, IsOwnerOrReadOnly
 
 
 class UserViewSet(ModelViewSet):
@@ -19,6 +20,8 @@ class UserViewSet(ModelViewSet):
     def get_permissions(self):
         if self.action == 'list' and not self.request.user.is_staff:
             return [IsStaffUser()]
+        elif self.action == 'retrieve':
+            return [IsAuthenticated(), IsOwnerOrReadOnly()]
         elif self.action == 'create':
             return []
         return super().get_permissions()
