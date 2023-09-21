@@ -20,10 +20,10 @@ class UserViewSet(ModelViewSet):
     def get_permissions(self):
         if self.action == 'list' and not self.request.user.is_staff:
             return [IsStaffUser()]
-        elif self.action == 'retrieve':
-            return [IsAuthenticated(), IsOwnerOrReadOnly()]
         elif self.action == 'create':
             return []
+        elif self.action in ['retrieve', 'update', 'partial_update', 'destroy']:
+            return [IsOwnerOrReadOnly()]
         return super().get_permissions()
 
 
