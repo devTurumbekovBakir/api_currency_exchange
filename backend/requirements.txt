@@ -2,4 +2,5 @@ Django
 djangorestframework
 requests
 drf_yasg
-psycopg2
+psycopg2-binary
+gunicorn

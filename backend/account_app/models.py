@@ -35,7 +35,7 @@ class ConfirmationCode(models.Model):
 
     class Meta:
         verbose_name = 'Код подтверждения'
-        verbose_name_plural = 'Код подтверждения'
+        verbose_name_plural = 'Коды подтверждения'
 
     def __str__(self):
         return f'{self.code} - {self.user.username}'

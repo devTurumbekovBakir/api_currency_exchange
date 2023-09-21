@@ -12,7 +12,7 @@ from .permissions import IsStaffUser
 
 
 class UserViewSet(ModelViewSet):
-    queryset = User.objects.all().select_related('statususer')
+    queryset = User.objects.all().select_related('status')
     serializer_class = UserSerializer
     authentication_classes = [TokenAuthentication]
 
@@ -29,7 +29,6 @@ class StatusUserViewSet(ModelViewSet):
     serializer_class = StatusUserSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsStaffUser]
-
 
 
 class EmailConfirmationView(APIView):
