@@ -32,12 +32,12 @@ class UserSerializer(serializers.ModelSerializer):
             is_staff = False
             account_amount = invest_sum
 
-        if passport_id:
-            status = StatusUser.objects.get(number=1)
-        elif passport_id is None and invest_sum >= 1000000:
-            status = StatusUser.objects.get(number=3)
-        else:
-            status = StatusUser.objects.get(number=2)
+            if passport_id:
+                status = StatusUser.objects.get(number=1)
+            elif passport_id is None and invest_sum >= 1000000:
+                status = StatusUser.objects.get(number=3)
+            else:
+                status = StatusUser.objects.get(number=2)
 
         user = User(username=validated_data['username'], email=validated_data['email'],
                     passport_id=passport_id, status=status, is_active=False, is_staff=is_staff)
@@ -82,11 +82,6 @@ class UserSerializer(serializers.ModelSerializer):
     def validate_invest_sum(self, value):
         if value < 1000:
             raise ValidationError('Введенная сумма не должна быть меньше 1000 сом')
-        return value
-
-    def validate_passport_id(self, value):
-        if not value.startswith('ID'):
-            raise ValidationError('Паспорт должен начинаться с ID')
         return value
 
 
