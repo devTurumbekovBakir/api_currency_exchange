@@ -19,7 +19,6 @@ class UserSerializer(serializers.ModelSerializer):
 
         fields = ['id', 'username', 'email', 'invest_sum', 'password', 'passport_id']
 
-
     def create(self, validated_data):
         invest_sum = float(validated_data.pop('invest_sum'))
         passport_id = validated_data.get('passport_id')
@@ -27,7 +26,8 @@ class UserSerializer(serializers.ModelSerializer):
 
         if username.startswith('admin'):
             is_staff = True
-            account_amount = invest_sum - invest_sum
+            account_amount = 0
+            status = None
         else:
             is_staff = False
             account_amount = invest_sum
@@ -41,7 +41,6 @@ class UserSerializer(serializers.ModelSerializer):
 
         user = User(username=validated_data['username'], email=validated_data['email'],
                     passport_id=passport_id, status=status, is_active=False, is_staff=is_staff)
-
 
         user.set_password(validated_data['password'])
         user.save()
@@ -85,9 +84,20 @@ class UserSerializer(serializers.ModelSerializer):
             raise ValidationError('Введенная сумма не должна быть меньше 1000 сом')
         return value
 
+    def validate_passport_id(self, value):
+        if not value.startswith('ID'):
+            raise ValidationError('Паспорт должен начинаться с ID')
+        return value
+
 
 class StatusUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = StatusUser
         fields = '__all__'
         read_only_fields = ['user']
+
+
+class EmailConfirmationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ConfirmationCode
+        fields = ['code']

@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 
 from .business_logic.currency import get_currency_api
-from .business_logic.transaction import withdraw_from_account, account_replenishment, profit_company
+from .business_logic.transaction import withdraw_from_account, account_replenishment
 from .models import Transaction, AccountKGS, AccountUSD, AccountRUB, AccountEUR
 from . import serializers
 
@@ -16,7 +16,7 @@ class TransactionListCreateApiView(APIView):
     authentication_classes = [TokenAuthentication]
 
     def get(self, request, *args, **kwargs):
-        transactions = Transaction.objects.all()
+        transactions = Transaction.objects.filter(user=request.user).select_related('user')
         serializer = serializers.TransactionSerializer(transactions, many=True)
         return Response(serializer.data)
 
@@ -50,8 +50,27 @@ class TransactionListCreateApiView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CompanyAccounts(ListAPIView):
+class CompanyAccountsList(ListAPIView):
     permission_classes = [IsAdminUser]
+    authentication_classes = [TokenAuthentication]
+
+    def get(self, request, *args, **kwargs):
+        acc_kgs = AccountKGS.objects.get(user=request.user).amount
+        acc_usd = AccountUSD.objects.get(user=request.user).amount
+        acc_rub = AccountRUB.objects.get(user=request.user).amount
+        acc_eur = AccountEUR.objects.get(user=request.user).amount
+        data = {
+            'KGS': acc_kgs,
+            'USD': acc_usd,
+            'RUB': acc_rub,
+            'EUR': acc_eur
+        }
+
+        return Response(data)
+
+
+class UserAccountList(APIView):
+    permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
 
     def get(self, request, *args, **kwargs):
