@@ -24,6 +24,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 class AccountKGSSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountKGS
+        fields = ('user', 'code_currency', 'amount')
         read_only_fields = ['user', 'code_currency', 'amount']
 
 
